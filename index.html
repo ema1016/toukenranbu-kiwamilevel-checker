@@ -2,11 +2,39 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>極レベル計算機テスト</title>
+  <title>刀剣乱舞 極レベル計算ツール</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;          /* 中央揃え */
+      margin: 40px;
+      background-color: #f8f8f8;
+      color: #333;
+    }
+    h1 {
+      margin-bottom: 0.5em;
+    }
+    p.note {
+      font-size: 0.9em;
+      color: #666;
+      margin-top: 0;
+      margin-bottom: 2em;
+    }
+    label, select, input, button {
+      font-size: 1.1em;
+      margin: 0.3em;
+    }
+    #result {
+      margin-top: 1.5em;
+      font-weight: bold;
+      font-size: 1.2em;
+      color: #007acc;
+    }
+  </style>
 </head>
 <body>
-  <h1>極レベル計算機テスト</h1>
-  <p>累積経験値を入力して極レベルを計算します。</p>
+  <h1>刀剣乱舞 極レベル計算ツール</h1>
+  <p class="note">累積経験値を入力して、極レベルを推定します。経験値はゲーム内の累計経験値を入力してください。</p>
 
   <label for="type">刀種：</label>
   <select id="type">
@@ -18,14 +46,14 @@
     <option value="uchigatana-r3">打刀（レア3）</option>
     <option value="tachi">太刀</option>
     <option value="ootachi">大太刀</option>
-  </select><br/><br/>
+  </select><br /><br />
 
   <label for="exp">累積経験値：</label>
-  <input type="text" id="exp" /><br/><br/>
+  <input type="text" id="exp" /><br /><br />
 
   <button type="button" onclick="calculateLevel()">計算する</button>
 
-  <div id="result" style="margin-top:1em; font-weight:bold;"></div>
+  <div id="result"></div>
 
   <script src="levelCalculator.js"></script>
 </body>
