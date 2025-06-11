@@ -2,31 +2,25 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>刀剣乱舞 極レベル計算ツール - 完全版</title>
+<title>極レベル計算</title>
 </head>
 <body>
-  <h1>刀剣乱舞 極レベル計算ツール - 完全版</h1>
-
-  <label for="type">刀種を選択:</label>
   <select id="type">
     <option value="tantou">短刀</option>
     <option value="wakizashi">脇差</option>
-    <option value="uchigatana-r2">打刀(レア2)</option>
-    <option value="uchigatana-r3">打刀(レア3)</option>
-    <option value="tachi">太刀（レア4・5）</option>
-    <option value="ootachi">大太刀（レア4・5）</option>
-    <option value="yari">槍（レア4・5）</option>
+    <option value="yari">槍</option>
     <option value="naginata">薙刀</option>
+    <option value="uchigatana-r2">打刀レア2</option>
+    <option value="uchigatana-r3">打刀レア3</option>
+    <option value="tachi">太刀</option>
+    <option value="ootachi">大太刀</option>
   </select>
 
-  <br />
+  <input type="text" id="exp" placeholder="累計経験値を入力" />
 
-  <label for="exp">累計経験値を入力:</label>
-  <input type="number" id="exp" placeholder="例: 55678757" />
-  <button onclick="calculateLevel()">レベルを計算</button>
+  <button onclick="calculateLevel()">計算する</button>
 
-  <div id="result"></div>
+  <div id="result" style="margin-top: 1em; font-weight: bold;"></div>
 
   <script src="levelCalculator.js"></script>
 </body>
