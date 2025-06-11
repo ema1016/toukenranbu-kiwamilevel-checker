@@ -57,12 +57,12 @@ function calculateLevel() {
   let level = 0;
   for (let i = 1; i < expTable.length; i++) {
     if (baseExp < expTable[i]) {
-      level = i; // baseExpはexpTable[i-1]以上expTable[i]未満なのでレベルはi-1の次のレベルi
+      level = i - 1;
       break;
     }
   }
   if (baseExp >= expTable[expTable.length - 1]) {
-    level = 99; // 最大レベル
+    level = 99;
   }
 
   // レベルが35未満の場合は別表示
