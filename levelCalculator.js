@@ -9,7 +9,7 @@ const multipliers = {
   ootachi: 1.5,
 };
 
-// 極短刀 Lv1～Lv99までの累積経験値テーブル（レベルインデックス = レベル）
+// 極短刀 Lv0～Lv99の累積経験値（0はLv0用、インデックス = レベル）
 const baseExpTable = [
   0,
   0,
@@ -135,48 +135,41 @@ const baseExpTable = [
 
 function calculateLevel() {
   const type = document.getElementById("type").value;
-  const totalExpInput = document.getElementById("exp").value.trim();
+  const inputExpStr = document.getElementById("exp").value.trim();
   const resultDiv = document.getElementById("result");
 
-  if (!totalExpInput) {
+  if (!inputExpStr) {
     resultDiv.textContent = "累計経験値を入力してください。";
     return;
   }
 
-  const totalExp = Number(totalExpInput);
-  if (isNaN(totalExp) || totalExp <= 0) {
+  const inputExp = Number(inputExpStr);
+  if (isNaN(inputExp) || inputExp < 0) {
     resultDiv.textContent = "有効な経験値を入力してください。";
     return;
   }
 
   const multiplier = multipliers[type] || 1.0;
 
-  // Lv35までの経験値（短刀基準での累積値）
-  const baseOffsetExp = 1241685; // 累積経験値Lv34まで（短刀基準）
+  // 経験値テーブルに倍率を掛けたものを生成
+  const adjustedExpTable = baseExpTable.map(exp => Math.floor(exp * multiplier));
 
-  // 入力経験値から修行開始分を引いて計算
-  let baseExp = totalExp - baseOffsetExp;
-
-  if (baseExp < 0) {
-    resultDiv.textContent = "極修行可能レベル未満です（Lv34以下）。";
-    return;
-  }
-
-  // 経験値テーブルを倍率で補正
-  const expTable = baseExpTable.map((exp) => exp * multiplier);
-
-  // レベル判定
-  let level = 34; // Lv34までは共通なので初期値は34
-  for (let i = 35; i < expTable.length; i++) {
-    if (baseExp < expTable[i]) {
+  // 入力の累積経験値に最も近いレベルを探す（経験値以下の最大レベル）
+  let level = 0;
+  for (let i = 1; i < adjustedExpTable.length; i++) {
+    if (inputExp < adjustedExpTable[i]) {
       level = i - 1;
       break;
     }
-    if (i === expTable.length - 1) {
+    if (i === adjustedExpTable.length - 1) {
       level = i;
     }
   }
 
+  if (level === 0) {
+    resultDiv.textContent = "極修行開始前、または経験値が不足しています。";
+    return;
+  }
+
   resultDiv.textContent = `推定極レベル: ${level}`;
 }
-
