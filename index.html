@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>刀剣乱舞 極レベル計算ツール</h1>
     <div class="container">
+        <h1>刀剣乱舞 極レベル計算ツール</h1>
         <label for="type">刀種を選択:</label>
         <select id="type">
             <option value="tantou">短刀</option>
@@ -25,11 +25,11 @@
         <input type="number" id="exp" placeholder="例: 55678757">
         <button onclick="calculateLevel()">レベルを計算</button>
         <div id="result"></div>
+        <p class="note">
+            ※本ツールはゲーム公式のものではなく、個人利用の目的で作成した非公式の計算ツールです。<br>
+            ※動作や計算結果の正確性には万全を期しておりますが、完全な保証はできません。ご了承ください。
+        </p>
     </div>
-    <p class="note">
-        ※本ツールはゲーム公式のものではなく、個人利用の目的で作成した非公式の計算ツールです。<br>
-        ※動作や計算結果の正確性には万全を期しておりますが、完全な保証はできません。ご了承ください。
-    </p>
     <script src="levelCalculator.js"></script>
 </body>
 </html>
