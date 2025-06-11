@@ -1,62 +1,42 @@
-const expTables = {
-    tantou: {
-        offset: 445300,
-        max: 62184826,
-    },
-    wakizashi: {
-        offset: 540800,
-        max: 68403309,
-    },
-    "uchigatana-r2": {
-        offset: 648800,
-        max: 74621791,
-    },
-    "uchigatana-r3": {
-        offset: 648800,
-        max: 80840274,
-    },
-    tachi: {
-        offset: 770800,
-        max: 87058756,
-    },
-    ootachi: {
-        offset: 907800,
-        max: 93277239,
-    },
-    yari: {
-        offset: 540800,
-        max: 68403309,
-    },
-    naginata: {
-        offset: 540800,
-        max: 68403309,
-    }
+const baseMaxExp = 62184826; // 極短刀の最大累積経験値 Lv99
+
+const multipliers = {
+  tantou: 1.0,
+  wakizashi: 1.1,
+  yari: 1.1,
+  naginata: 1.1,
+  "uchigatana-r2": 1.2,
+  "uchigatana-r3": 1.3,
+  tachi: 1.4,
+  ootachi: 1.5,
 };
 
 function calculateLevel() {
-    const type = document.getElementById("type").value;
-    const totalExp = parseInt(document.getElementById("exp").value, 10);
-    const resultDiv = document.getElementById("result");
+  const type = document.getElementById("type").value;
+  const totalExp = parseInt(document.getElementById("exp").value, 10);
+  const resultDiv = document.getElementById("result");
 
-    if (isNaN(totalExp) || totalExp <= 0) {
-        resultDiv.textContent = "有効な経験値を入力してください。";
-        return;
-    }
+  if (isNaN(totalExp) || totalExp <= 0) {
+    resultDiv.textContent = "有効な経験値を入力してください。";
+    return;
+  }
 
-    const table = expTables[type];
-    const baseExp = totalExp - table.offset;
+  const multiplier = multipliers[type] || 1.0;
+  const maxExp = baseMaxExp * multiplier;
 
-    if (baseExp <= 0) {
-        resultDiv.textContent = "修行直後（レベル35未満）です。";
-        return;
-    }
+  // 修行開始時点の経験値（35レベル相当のオフセット）
+  const offset = 445300;
+  const baseExp = totalExp - offset;
 
-    const maxExp = table.max;
-    const level = Math.floor((baseExp / maxExp) * 64) + 35;
+  if (baseExp <= 0) {
+    resultDiv.textContent = "修行直後（レベル35未満）です。";
+    return;
+  }
 
-    if (level >= 99) {
-        resultDiv.textContent = "推定レベル: 99 (カンスト)";
-    } else {
-        resultDiv.textContent = `推定レベル: ${level}`;
-    }
+  // 35〜99レベルまでの簡易線形補間
+  let level = Math.floor((baseExp / maxExp) * 64) + 35;
+
+  if (level > 99) level = 99;
+
+  resultDiv.textContent = `推定レベル: ${level}`;
 }
