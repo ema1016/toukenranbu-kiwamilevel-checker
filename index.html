@@ -1,49 +1,33 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>刀剣乱舞 極レベル計算ツール</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>刀剣乱舞 極レベル計算ツール - 完全版</title>
 </head>
 <body>
-    <div class="container">
-        <h1>刀剣乱舞 極レベル計算ツール</h1>
+  <h1>刀剣乱舞 極レベル計算ツール - 完全版</h1>
 
-        <label for="type">刀種を選択:</label>
-        <select id="type">
-            <option value="tantou">短刀</option>
-            <option value="wakizashi">脇差</option>
-            <option value="uchigatana-r2">打刀(レア2)</option>
-            <option value="uchigatana-r3">打刀(レア3)</option>
-            <option value="tachi">太刀（レア4・5）</option>
-            <option value="ootachi">大太刀（レア4・5）</option>
-            <option value="yari">槍（レア4・5）</option>
-            <option value="naginata">薙刀</option>
-        </select>
+  <label for="type">刀種を選択:</label>
+  <select id="type">
+    <option value="tantou">短刀</option>
+    <option value="wakizashi">脇差</option>
+    <option value="uchigatana-r2">打刀(レア2)</option>
+    <option value="uchigatana-r3">打刀(レア3)</option>
+    <option value="tachi">太刀（レア4・5）</option>
+    <option value="ootachi">大太刀（レア4・5）</option>
+    <option value="yari">槍（レア4・5）</option>
+    <option value="naginata">薙刀</option>
+  </select>
 
-        <label for="exp">累計経験値を入力:</label>
-        <input type="number" id="exp" placeholder="例: 55678757">
-        <button onclick="calculateLevel()">レベルを計算</button>
+  <br />
 
-        <div id="result"></div>
+  <label for="exp">累計経験値を入力:</label>
+  <input type="number" id="exp" placeholder="例: 55678757" />
+  <button onclick="calculateLevel()">レベルを計算</button>
 
-        <p class="note">
-            ※本ツールはゲーム公式のものではなく、個人利用の目的で作成した非公式の計算ツールです。<br>
-            ※動作や計算結果の正確性には万全を期しておりますが、完全な保証はできません。ご了承ください。
-        </p>
-    </div>
+  <div id="result"></div>
 
-    <!-- ✅ スクリプト読み込み切替（開発用: isDev=true） -->
-    <script>
-        const isDev = true; // ← 開発時は true、本番アップロード時は false に変更
-
-        const script = document.createElement('script');
-        script.src = isDev 
-            ? `levelCalculator.js?v=${Date.now()}`  // 開発用: キャッシュ回避
-            : 'levelCalculator.js';                // 本番用: 通常読み込み
-
-        document.body.appendChild(script);
-    </script>
+  <script src="levelCalculator.js"></script>
 </body>
 </html>
