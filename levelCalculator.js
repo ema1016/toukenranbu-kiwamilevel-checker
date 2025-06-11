@@ -1,81 +1,62 @@
-
 const expTables = {
     tantou: {
-        baseOffset: 445300,
+        offset: 445300,
         max: 62184826,
     },
     wakizashi: {
-        baseOffset: 540800,
+        offset: 540800,
         max: 68403309,
     },
     "uchigatana-r2": {
-        baseOffset: 648800,
+        offset: 648800,
         max: 74621791,
     },
     "uchigatana-r3": {
-        baseOffset: 648800,
+        offset: 648800,
         max: 80840274,
     },
     tachi: {
-        baseOffset: 770800,
+        offset: 770800,
         max: 87058756,
     },
     ootachi: {
-        baseOffset: 907800,
+        offset: 907800,
         max: 93277239,
     },
     yari: {
-        baseOffset: 540800,
+        offset: 540800,
         max: 68403309,
     },
     naginata: {
-        baseOffset: 540800,
+        offset: 540800,
         max: 68403309,
     }
 };
 
-function generateLevelTable(maxExp) {
-    const table = [];
-    let total = 0;
-    for (let lv = 1; lv <= 99; lv++) {
-        const next = Math.floor(1000 + Math.pow(lv, 2.2));
-        total += next;
-        table.push(total);
-        if (total > maxExp) break;
-    }
-    return table;
-}
-
 function calculateLevel() {
-    const type = document.getElementById('type').value;
-    const inputExp = parseInt(document.getElementById('exp').value);
-    const result = document.getElementById('result');
+    const type = document.getElementById("type").value;
+    const totalExp = parseInt(document.getElementById("exp").value, 10);
+    const resultDiv = document.getElementById("result");
 
-    if (isNaN(inputExp)) {
-        result.textContent = '有効な経験値を入力してください。';
+    if (isNaN(totalExp) || totalExp <= 0) {
+        resultDiv.textContent = "有効な経験値を入力してください。";
         return;
     }
 
-    const { baseOffset, max } = expTables[type];
-    const realExp = inputExp - baseOffset;
+    const table = expTables[type];
+    const baseExp = totalExp - table.offset;
 
-    if (realExp <= 0) {
-        result.textContent = '極レベルはまだありません。';
+    if (baseExp <= 0) {
+        resultDiv.textContent = "修行直後（レベル35未満）です。";
         return;
     }
 
-    const table = generateLevelTable(max);
-    let level = 1;
+    const maxExp = table.max;
+    const level = Math.floor((baseExp / maxExp) * 64) + 35;
 
-    for (let i = 0; i < table.length; i++) {
-        if (realExp >= table[i]) {
-            level = i + 2;
-        } else {
-            break;
-        }
+    if (level >= 99) {
+        resultDiv.textContent = "推定レベル: 99 (カンスト)";
+    } else {
+        resultDiv.textContent = `推定レベル: ${level}`;
     }
-
-    if (level > 99) level = 99;
-
-    result.textContent = `予測レベル: ${level}`;
 }
