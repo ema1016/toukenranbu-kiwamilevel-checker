@@ -34,6 +34,16 @@
         </p>
     </div>
 
-    <script src="levelCalculator.js"></script>
+    <!-- ✅ スクリプト読み込み切替（開発用: isDev=true） -->
+    <script>
+        const isDev = true; // ← 開発時は true、本番アップロード時は false に変更
+
+        const script = document.createElement('script');
+        script.src = isDev 
+            ? `levelCalculator.js?v=${Date.now()}`  // 開発用: キャッシュ回避
+            : 'levelCalculator.js';                // 本番用: 通常読み込み
+
+        document.body.appendChild(script);
+    </script>
 </body>
 </html>
