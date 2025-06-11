@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -10,26 +9,31 @@
 <body>
     <div class="container">
         <h1>刀剣乱舞 極レベル計算ツール</h1>
+
         <label for="type">刀種を選択:</label>
         <select id="type">
             <option value="tantou">短刀</option>
             <option value="wakizashi">脇差</option>
-            <option value="uchigatana-r2">打刀(レア3)</option>
-            <option value="uchigatana-r3">打刀(レア4)</option>
+            <option value="uchigatana-r2">打刀(レア2)</option>
+            <option value="uchigatana-r3">打刀(レア3)</option>
             <option value="tachi">太刀（レア4・5）</option>
             <option value="ootachi">大太刀（レア4・5）</option>
             <option value="yari">槍（レア4・5）</option>
             <option value="naginata">薙刀</option>
         </select>
+
         <label for="exp">累計経験値を入力:</label>
         <input type="number" id="exp" placeholder="例: 55678757">
         <button onclick="calculateLevel()">レベルを計算</button>
+
         <div id="result"></div>
+
         <p class="note">
             ※本ツールはゲーム公式のものではなく、個人利用の目的で作成した非公式の計算ツールです。<br>
             ※動作や計算結果の正確性には万全を期しておりますが、完全な保証はできません。ご了承ください。
         </p>
     </div>
+
     <script src="levelCalculator.js"></script>
 </body>
 </html>
