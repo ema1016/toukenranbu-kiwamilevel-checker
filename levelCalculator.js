@@ -9,7 +9,6 @@ const multipliers = {
   ootachi: 1.5,
 };
 
-// 極短刀 Lv0～Lv99の累積経験値テーブル（インデックス＝レベル）
 const baseExpTable = [
   0,0,588,1305,2194,3296,4653,6307,8300,10673,
   13468,16727,20491,24802,29702,35233,41436,48354,56027,64498,
@@ -46,14 +45,16 @@ function calculateLevel() {
 
   let level = 0;
   for (let i = 1; i < adjustedExpTable.length; i++) {
+    console.log(`レベル${i}の必要経験値: ${adjustedExpTable[i]}, 入力経験値: ${inputExp}`);
     if (inputExp < adjustedExpTable[i]) {
       level = i - 1;
+      console.log(`判定レベル: ${level}`);
       break;
     }
   }
-  // 入力経験値が最大値以上なら99レベル
   if (level === 0 && inputExp >= adjustedExpTable[adjustedExpTable.length - 1]) {
     level = adjustedExpTable.length - 1;
+    console.log(`最大レベル判定: ${level}`);
   }
 
   if (level === 0) {
@@ -63,3 +64,4 @@ function calculateLevel() {
 
   resultDiv.textContent = `推定極レベル: ${level}`;
 }
+
