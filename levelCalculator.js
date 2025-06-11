@@ -57,4 +57,3 @@ function calculateLevel() {
 
   resultDiv.textContent = `推定極レベル: ${level}`;
 }
-
