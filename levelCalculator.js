@@ -1,3 +1,14 @@
+const multipliers = {
+  tantou: 1.0,
+  wakizashi: 1.1,
+  yari: 1.1,
+  naginata: 1.1,
+  "uchigatana-r2": 1.2,
+  "uchigatana-r3": 1.3,
+  tachi: 1.4,
+  ootachi: 1.5,
+};
+
 const baseExpTable = [
   0,           // Lv1
   588,         // Lv2
@@ -99,3 +110,44 @@ const baseExpTable = [
   60684826,    // Lv98
   62184826     // Lv99
 ];
+
+function calculateLevel() {
+  const type = document.getElementById("type").value;
+  const inputExpStr = document.getElementById("exp").value.trim();
+  const resultDiv = document.getElementById("result");
+
+  if (!inputExpStr) {
+    resultDiv.textContent = "累計経験値を入力してください。";
+    return;
+  }
+
+  const inputExp = Number(inputExpStr);
+  if (isNaN(inputExp) || inputExp < 0) {
+    resultDiv.textContent = "有効な経験値を入力してください。";
+    return;
+  }
+
+  const multiplier = multipliers[type] || 1.0;
+  const adjustedExpTable = baseExpTable.map(exp => Math.floor(exp * multiplier));
+
+  const MAX_LEVEL = 99;
+  let level = 0;
+
+  for (let i = 1; i <= MAX_LEVEL; i++) {
+    if (inputExp < adjustedExpTable[i]) {
+      level = i - 1;
+      break;
+    }
+  }
+
+  if (level === 0 && inputExp >= adjustedExpTable[MAX_LEVEL]) {
+    level = MAX_LEVEL;
+  }
+
+  if (level === 0) {
+    resultDiv.textContent = "極修行開始前、または経験値が不足しています。";
+    return;
+  }
+
+  resultDiv.textContent = `推定極レベル: ${level}`;
+}
