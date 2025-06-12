@@ -54,9 +54,9 @@ function calculateLevel() {
   const requiredExp = minRequiredExp[type];
 
   if (inputExp < requiredExp) {
-    resultDiv.innerHTML = `<span style="color: red; font-size: 0.9em;">
+    resultDiv.innerHTML = `<span style="color: red; font-size: 0.9em; font-weight: normal;">
       修行に出すには、まだ経験値が足りないようです。<br>
-      必要な累計経験値は ${requiredExp.toLocaleString()} です。
+      必要な累計経験値は（${requiredExp.toLocaleString()}）です。
     </span>`;
     return;
   }
