@@ -6,7 +6,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet" />
   <style>
     body {
-      background: linear-gradient(135deg, #dbefff, #f0f9ff);
+      background-color: #ffffff;
       font-family: 'Noto Sans JP', 'Helvetica Neue', Helvetica, Arial, sans-serif;
       color: #333;
       text-align: center;
@@ -34,7 +34,7 @@
     form {
       max-width: 440px;
       margin: 0 auto 25px;
-      background: white;
+      background: #fff;
       padding: 25px 30px;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -87,14 +87,21 @@
     #result {
       max-width: 440px;
       margin: 25px auto 0;
-      background: white;
-      padding: 18px 22px;
+      background: #fff;
+      padding: 20px;
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-      font-weight: 600;
       font-size: 18px;
-      color: #2c3e50;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
+      color: #2c3e50;
+    }
+    #result.empty {
+      color: #aaa;
+      font-style: italic;
     }
     footer {
       margin-top: 50px;
@@ -106,9 +113,6 @@
       line-height: 1.6;
       text-align: center;
       white-space: pre-line;
-    }
-    footer p {
-      margin: 6px 0;
     }
     footer .author {
       font-weight: 400;
@@ -147,7 +151,7 @@
     <button type="submit">計算する</button>
   </form>
 
-  <div id="result"></div>
+  <div id="result" class="empty">ここに推定レベルが表示されます</div>
 
   <footer>
     <p>※このツールは非公式のものであり、個人利用のために作成されたものです。<br>必ずしも正確性を保証するものではありません。</p>
@@ -155,5 +159,18 @@
   </footer>
 
   <script src="levelCalculator.js"></script>
+  <script>
+    // 結果表示の初期化
+    function setResult(text, isEmpty = false) {
+      const result = document.getElementById("result");
+      result.textContent = text;
+      result.className = isEmpty ? "empty" : "";
+    }
+
+    // ページ読み込み時に初期表示をセット
+    window.addEventListener("DOMContentLoaded", () => {
+      setResult("ここに推定レベルが表示されます", true);
+    });
+  </script>
 </body>
 </html>
