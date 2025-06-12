@@ -5,19 +5,20 @@
   <title>刀剣乱舞 極レベル計算ツール</title>
   <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru&display=swap" rel="stylesheet">
   <style>
-  body {
-  background-color: #f0fbfc;
-  background-image: url('https://raw.githubusercontent.com/mike-hearn/transparent-textures/master/patterns/asanoha.png');
-  background-repeat: repeat;
-  /* 他のプロパティはそのまま */
-}
-
+    body {
+      background-color: #f0fbfc;
+      background-image: url('https://raw.githubusercontent.com/mike-hearn/transparent-textures/master/patterns/asanoha.png');
+      background-repeat: repeat;
+      font-family: 'Kiwi Maru', 'Noto Serif JP', serif;
+      color: #333;
+      text-align: center;
+      padding: 30px;
+    }
     h1 {
       color: #223A70;
       margin-bottom: 10px;
       font-weight: 700;
     }
-
     #notice {
       background-color: #e0f7fa;
       border: 1px solid #81d4fa;
@@ -29,7 +30,6 @@
       font-size: 14px;
       max-width: 400px;
     }
-
     input, select, button {
       font-size: 16px;
       padding: 8px 12px;
@@ -39,22 +39,18 @@
       outline: none;
       transition: border-color 0.3s;
     }
-
     input:focus, select:focus {
       border-color: #223A70;
     }
-
     button {
       background-color: #223A70;
       color: white;
       cursor: pointer;
       border: none;
     }
-
     button:hover {
       background-color: #1a2d59;
     }
-
     #result {
       margin-top: 25px;
       font-weight: 600;
@@ -62,24 +58,16 @@
       color: #2c3e50;
       min-height: 2em;
     }
-
-    #result.empty::before {
+    #result:empty::before {
       content: "ここに推定レベルが表示されます";
       color: #999;
       font-weight: normal;
     }
-
     .warning {
       font-size: 13px;
       color: #b71c1c;
       font-weight: normal;
     }
-
-    .congrats {
-      color: #b71c1c;
-      font-weight: bold;
-    }
-
     footer {
       margin-top: 40px;
       font-size: 12px;
@@ -89,7 +77,6 @@
       margin-right: auto;
       line-height: 1.5;
     }
-
     footer .author {
       margin-top: 15px;
       font-weight: normal;
@@ -133,63 +120,17 @@
     <p class="author">作成者: 彼岸城審神者 | © 2025</p>
   </footer>
 
+  <script src="levelCalculator.js"></script>
   <script>
-    const levelThresholds = {
-      tantou: 445300,
-      wakizashi: 540800,
-      yari: 540800,
-      naginata: 540800,
-      "uchigatana-r2": 648800,
-      "uchigatana-r3": 648800,
-      tachi: 770800,
-      ootachi: 907800
-    };
-
-    const maxExp = {
-      tantou: 62630123,
-      wakizashi: 68403309,
-      yari: 68403309,
-      naginata: 68403309,
-      "uchigatana-r2": 75270591,
-      "uchigatana-r3": 81489074,
-      tachi: 87829556,
-      ootachi: 94185039
-    };
-
-    function calculateLevel() {
-      const exp = parseInt(document.getElementById("exp").value, 10);
-      const type = document.getElementById("type").value;
+    // 初期表示
+    function setResult(text, isEmpty = false) {
       const result = document.getElementById("result");
-      result.classList.remove("empty");
-
-      if (isNaN(exp) || exp < 0) {
-        result.innerHTML = '<span class="warning">有効な累計経験値を入力してください。</span>';
-        return;
-      }
-
-      const requiredExp = levelThresholds[type];
-      const max = maxExp[type];
-
-      if (exp < requiredExp) {
-        result.innerHTML = `<span class="warning">修行に出すには、まだ経験値が足りないようです。<br>(必要な累計経験値：${requiredExp.toLocaleString()})</span>`;
-        return;
-      }
-
-      if (exp >= max) {
-        result.innerHTML = `推定レベル：99<br><span class="congrats">レベリングお疲れ様でした！</span>`;
-        return;
-      }
-
-      // 仮の計算（必要に応じて実際の経験値テーブルで調整可）
-      const level = Math.floor((exp / max) * 99);
-      result.textContent = `推定レベル：${level}`;
+      result.textContent = text;
+      result.className = isEmpty ? "empty" : "";
     }
 
-    // 初期表示
     window.addEventListener("DOMContentLoaded", () => {
-      const result = document.getElementById("result");
-      result.textContent = "";
-      result.classList.add("empty");
+      setResult("", true);
     });
   </script>
 </body>
