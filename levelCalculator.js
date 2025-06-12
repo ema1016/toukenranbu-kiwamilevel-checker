@@ -54,7 +54,10 @@ function calculateLevel() {
   const requiredExp = minRequiredExp[type];
 
   if (inputExp < requiredExp) {
-    resultDiv.textContent = "修行に出すには、まだ経験値が足りないようです。";
+    resultDiv.innerHTML = `<span style="color: red; font-size: 0.9em;">
+      修行に出すには、まだ経験値が足りないようです。<br>
+      必要な累計経験値は ${requiredExp.toLocaleString()} です。
+    </span>`;
     return;
   }
 
@@ -65,6 +68,7 @@ function calculateLevel() {
       break;
     }
   }
+
   if (adjustedExp >= baseExpTable[baseExpTable.length - 1]) {
     level = baseExpTable.length;
     resultDiv.innerHTML = `推定極レベル: ${level}<br><span style="color: red;">レベリングお疲れ様でした！</span>`;
