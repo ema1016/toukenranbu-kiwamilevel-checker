@@ -3,84 +3,123 @@
 <head>
   <meta charset="UTF-8" />
   <title>刀剣乱舞 極レベル計算ツール</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet" />
   <style>
-    body {
-      background-color: #f0fbfc;
-      background-image: url('https://www.transparenttextures.com/patterns/asanoha.png');
-      font-family: 'Kiwi Maru', 'Noto Serif JP', serif;
-      color: #333;
-      text-align: center;
-      padding: 30px;
-    }
+   body {
+  background-color: #f0fbfc; /* ← ここを薄い水色に変更 */
+  font-family: 'Noto Sans JP', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #333;
+  text-align: center;
+  padding: 40px 20px;
+  margin: 0;
+}
     h1 {
-      color: #223A70;
-      margin-bottom: 10px;
+      color: #2c3e50;
+      margin-bottom: 12px;
       font-weight: 700;
+      font-size: 2.2rem;
     }
     #notice {
       background-color: #e0f7fa;
       border: 1px solid #81d4fa;
       color: #0277bd;
       display: inline-block;
-      padding: 10px 20px;
-      border-radius: 6px;
-      margin-bottom: 20px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      margin-bottom: 25px;
       font-size: 14px;
-      max-width: 400px;
+      max-width: 420px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    input, select, button {
+    form {
+      max-width: 440px;
+      margin: 0 auto 25px;
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+    form div {
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #444;
+      font-size: 15px;
+    }
+    input, select {
+      width: 100%;
       font-size: 16px;
-      padding: 8px 12px;
-      margin: 8px 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+      padding: 10px 14px;
+      border-radius: 6px;
+      border: 1.5px solid #ccc;
       outline: none;
+      box-sizing: border-box;
       transition: border-color 0.3s;
+      font-family: 'Noto Sans JP', sans-serif;
     }
     input:focus, select:focus {
-      border-color: #223A70;
+      border-color: #3498db;
+      box-shadow: 0 0 6px rgba(52,152,219,0.4);
     }
     button {
-      background-color: #223A70;
-      color: white;
-      cursor: pointer;
+      width: 100%;
+      background: linear-gradient(145deg, #4aa1f3, #2380d7);
+      box-shadow: 0 4px 8px rgba(35,128,215,0.4);
       border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 14px 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
     }
     button:hover {
-      background-color: #1a2d59;
+      background: linear-gradient(145deg, #3b8ce3, #1f6bba);
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(31,107,186,0.6);
     }
     #result {
-      margin-top: 25px;
-      font-weight: 600;
+      max-width: 440px;
+      margin: 25px auto 0;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
       font-size: 18px;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
       color: #2c3e50;
-      min-height: 2em;
     }
-    #result:empty::before {
-      content: "ここに推定レベルが表示されます";
-      color: #999;
-      font-weight: normal;
-    }
-    .warning {
-      font-size: 13px;
-      color: #b71c1c;
-      font-weight: normal;
+    #result.empty {
+      color: #aaa;
+      font-style: italic;
     }
     footer {
-      margin-top: 40px;
+      margin-top: 50px;
       font-size: 12px;
       color: #999;
       max-width: 600px;
       margin-left: auto;
       margin-right: auto;
-      line-height: 1.5;
+      line-height: 1.6;
+      text-align: center;
+      white-space: pre-line;
     }
     footer .author {
-      margin-top: 15px;
-      font-weight: normal;
+      font-weight: 400;
       color: #666;
-      font-size: 12px;
+      font-size: 13px;
+      margin-top: 18px;
+      user-select: none;
     }
   </style>
 </head>
@@ -91,4 +130,47 @@
     ※累計経験値を入力して、刀種を選択してください。極レベルを推定します。
   </div>
 
-  <!-- 以降、既存の内容とJSスクリプトはそのまま使用でOK -->
+  <form onsubmit="event.preventDefault(); calculateLevel();">
+    <div>
+      <label for="exp">累計経験値：</label>
+      <input type="number" id="exp" />
+    </div>
+    <div>
+      <label for="type">刀種：</label>
+      <select id="type">
+        <option value="tantou">短刀</option>
+        <option value="wakizashi">脇差</option>
+        <option value="yari">槍</option>
+        <option value="naginata">薙刀</option>
+        <option value="uchigatana-r2">打刀（レア2）</option>
+        <option value="uchigatana-r3">打刀（レア3）</option>
+        <option value="tachi">太刀</option>
+        <option value="ootachi">大太刀</option>
+      </select>
+    </div>
+    <button type="submit">計算する</button>
+  </form>
+
+  <div id="result" class="empty">ここに推定レベルが表示されます</div>
+
+  <footer>
+    <p>※このツールは非公式のものであり、個人利用のために作成されたものです。<br>必ずしも正確性を保証するものではありません。</p>
+    <p class="author">作成者: 彼岸城審神者 | © 2025</p>
+  </footer>
+
+  <script src="levelCalculator.js"></script>
+  <script>
+    // 結果表示の初期化
+    function setResult(text, isEmpty = false) {
+      const result = document.getElementById("result");
+      result.textContent = text;
+      result.className = isEmpty ? "empty" : "";
+    }
+
+    // ページ読み込み時に初期表示をセット
+    window.addEventListener("DOMContentLoaded", () => {
+      setResult("ここに推定レベルが表示されます", true);
+    });
+  </script>
+</body>
+</html>
