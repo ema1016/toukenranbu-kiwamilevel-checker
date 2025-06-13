@@ -39,15 +39,13 @@ function calculateLevel() {
   const resultDiv = document.getElementById("result");
 
   if (!inputExpStr) {
-    resultDiv.textContent = "累計経験値を入力してください。";
-    resultDiv.style.color = "#2c3e50";
+    resultDiv.innerHTML = `<span style="font-size: 15px; color: #2c3e50;">累計経験値を入力してください。</span>`;
     return;
   }
 
   const inputExp = Number(inputExpStr);
   if (isNaN(inputExp) || inputExp < 0) {
-    resultDiv.textContent = "有効な経験値を入力してください。";
-    resultDiv.style.color = "#2c3e50";
+    resultDiv.innerHTML = `<span style="font-size: 15px; color: #2c3e50;">有効な経験値を入力してください。</span>`;
     return;
   }
 
@@ -75,8 +73,11 @@ function calculateLevel() {
 
   if (adjustedExp >= baseExpTable[baseExpTable.length - 1]) {
     level = baseExpTable.length;
-    resultDiv.innerHTML = `推定極レベル: ${level}<br><span style="color: red;">レベリングお疲れ様でした！</span>`;
+    resultDiv.innerHTML = `
+      <div style="font-size: 18px; font-weight: 600;">推定極レベル: ${level}</div>
+      <div style="color: red; font-size: 14px; margin-top: 6px;">レベリングお疲れ様でした！</div>
+    `;
   } else {
-    resultDiv.textContent = `推定極レベル: ${level}`;
+    resultDiv.innerHTML = `<div style="font-size: 18px; font-weight: 600;">推定極レベル: ${level}</div>`;
   }
 }
