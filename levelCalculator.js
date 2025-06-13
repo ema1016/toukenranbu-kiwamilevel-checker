@@ -54,10 +54,11 @@ function calculateLevel() {
   const requiredExp = minRequiredExp[type];
 
   if (inputExp < requiredExp) {
-    resultDiv.innerHTML = `<span style="color: red; font-size: 0.9em; font-weight: normal;">
-      修行に出すには、まだ経験値が足りないようです。<br>
-      （必要な累計経験値：${requiredExp.toLocaleString()}）
-    </span>`;
+    resultDiv.innerHTML = `
+      <span style="color: red; font-size: 0.9em; font-weight: normal;">
+        修行に出すには、まだ経験値が足りないようです。<br>
+        （必要な累計経験値：${requiredExp.toLocaleString()}）
+      </span>`;
     return;
   }
 
@@ -69,18 +70,15 @@ function calculateLevel() {
     }
   }
 
-  resultDiv.style.color = "#2c3e50";
-
   if (adjustedExp >= baseExpTable[baseExpTable.length - 1]) {
     level = baseExpTable.length;
- resultDiv.innerHTML = `
-  <div style="display: flex; flex-direction: column; align-items: flex-start;">
-    <div style="font-size: 18px; font-weight: 600;">推定極レベル: ${level}</div>
-    <div style="color: red; font-size: 14px; margin-top: 12px; line-height: 1.6;">
-      レベリングお疲れ様でした！
-    </div>
-  </div>
-`;
+    resultDiv.innerHTML = `
+      <div style="display: flex; flex-direction: column; align-items: flex-start;">
+        <div style="font-size: 18px; font-weight: 600;">推定極レベル: ${level}</div>
+        <div style="color: red; font-size: 14px; margin-top: 12px; line-height: 1.6;">
+          レベリングお疲れ様でした！
+        </div>
+      </div>`;
   } else {
     resultDiv.innerHTML = `<div style="font-size: 18px; font-weight: 600;">推定極レベル: ${level}</div>`;
   }
