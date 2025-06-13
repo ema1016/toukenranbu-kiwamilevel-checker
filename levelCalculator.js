@@ -40,12 +40,14 @@ function calculateLevel() {
 
   if (!inputExpStr) {
     resultDiv.textContent = "累計経験値を入力してください。";
+    resultDiv.style.color = "#2c3e50";
     return;
   }
 
   const inputExp = Number(inputExpStr);
   if (isNaN(inputExp) || inputExp < 0) {
     resultDiv.textContent = "有効な経験値を入力してください。";
+    resultDiv.style.color = "#2c3e50";
     return;
   }
 
@@ -68,6 +70,8 @@ function calculateLevel() {
       break;
     }
   }
+
+  resultDiv.style.color = "#2c3e50";
 
   if (adjustedExp >= baseExpTable[baseExpTable.length - 1]) {
     level = baseExpTable.length;
