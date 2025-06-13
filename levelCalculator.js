@@ -82,4 +82,4 @@ if (adjustedExp >= baseExpTable[baseExpTable.length - 1]) {
 } else {
   resultDiv.innerHTML = `<div style="font-size: 18px; font-weight: 600;">推定極レベル: ${level}</div>`;
 }
-  
+}
