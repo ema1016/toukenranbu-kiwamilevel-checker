@@ -7,76 +7,89 @@
   <style>
     body {
       background-color: #f0fbfc;
-      background-image: url('https://raw.githubusercontent.com/mike-hearn/transparent-textures/master/patterns/asanoha.png');
-      background-repeat: repeat;
-      font-family: 'Kiwi Maru', serif;
+      background-image: url('https://www.transparenttextures.com/patterns/asanoha.png');
+      font-family: 'Kiwi Maru', 'Noto Serif JP', serif;
       color: #333;
       text-align: center;
       padding: 30px;
     }
-    h1 { color: #223A70; margin-bottom:10px; font-weight:700; }
+    h1 {
+      color: #223A70;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
     #notice {
       background-color: #e0f7fa;
-      border:1px solid #81d4fa;
-      color:#0277bd;
-      display:inline-block;
-      padding:10px 20px;
-      border-radius:6px;
-      margin-bottom:20px;
-      font-size:14px;
-      max-width:400px;
+      border: 1px solid #81d4fa;
+      color: #0277bd;
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      max-width: 400px;
     }
     input, select, button {
-      font-size:16px;
-      padding:8px 12px;
-      margin:8px 5px;
-      border-radius:5px;
-      border:1px solid #ccc;
-      outline:none;
-      transition:border-color .3s;
+      font-size: 16px;
+      padding: 8px 12px;
+      margin: 8px 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      outline: none;
+      transition: border-color 0.3s;
     }
-    input:focus, select:focus { border-color: #223A70; }
+    input:focus, select:focus {
+      border-color: #223A70;
+    }
     button {
-      background-color:#223A70;
-      color:white;
-      cursor:pointer;
-      border:none;
+      background-color: #223A70;
+      color: white;
+      cursor: pointer;
+      border: none;
     }
-    button:hover { background-color:#1a2d59; }
+    button:hover {
+      background-color: #1a2d59;
+    }
     #result {
-      margin-top:25px;
-      font-weight:600;
-      font-size:18px;
-      color:#2c3e50;
-      min-height:2em;
+      margin-top: 25px;
+      font-weight: 600;
+      font-size: 18px;
+      color: #2c3e50;
+      min-height: 2em;
     }
-    #result.empty::before {
-      content:"ここに推定レベルが表示されます";
-      color:#999;
-      font-weight:normal;
+    #result:empty::before {
+      content: "ここに推定レベルが表示されます";
+      color: #999;
+      font-weight: normal;
     }
-    .warning { font-size:13px; color:#b71c1c; font-weight:normal; }
-    .congrats { color:#b71c1c; font-weight:bold; }
+    .warning {
+      font-size: 13px;
+      color: #b71c1c;
+      font-weight: normal;
+    }
     footer {
-      margin-top:40px;
-      font-size:12px;
-      color:#999;
-      max-width:600px;
-      margin:auto;
-      line-height:1.5;
+      margin-top: 40px;
+      font-size: 12px;
+      color: #999;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.5;
     }
     footer .author {
-      margin-top:15px;
-      font-weight:normal;
-      color:#666;
-      font-size:12px;
+      margin-top: 15px;
+      font-weight: normal;
+      color: #666;
+      font-size: 12px;
     }
   </style>
 </head>
 <body>
   <h1>刀剣乱舞 極レベル計算ツール</h1>
 
-  <div id="notice">※累計経験値を入力して、刀種を選択してください。極レベルを推定します。</div>
+  <div id="notice">
+    ※累計経験値を入力して、刀種を選択してください。極レベルを推定します。
+  </div>
 
   <form onsubmit="event.preventDefault(); calculateLevel();">
     <div>
@@ -106,19 +119,92 @@
     <p class="author">作成者: 彼岸城審神者 | © 2025</p>
   </footer>
 
-  <script src="levelCalculator.js"></script>
   <script>
-    function setResult(text, isEmpty=false){
-      const r=document.getElementById("result");
-      r.textContent=text; r.className=isEmpty?"empty":"";
+    const multipliers = {
+      tantou: 1.0,
+      wakizashi: 1.1,
+      yari: 1.1,
+      naginata: 1.1,
+      "uchigatana-r2": 1.2,
+      "uchigatana-r3": 1.3,
+      tachi: 1.4,
+      ootachi: 1.5,
+    };
+
+    const minRequiredExp = {
+      tantou: 445300,
+      wakizashi: 540800,
+      yari: 540800,
+      naginata: 540800,
+      "uchigatana-r2": 648800,
+      "uchigatana-r3": 648800,
+      tachi: 770800,
+      ootachi: 907800,
+    };
+
+    const baseExpTable = [
+      0, 588, 1305, 2194, 3296, 4653, 6307, 8300, 10673, 13468,
+      16727, 20491, 24802, 29702, 35233, 41436, 48354, 56027, 64498, 73808,
+      84000, 95114, 107193, 120278, 134411, 149634, 165989, 183517, 202260, 222260,
+      307195, 454335, 660950, 924310, 1241685, 1610345, 2027560, 2490600, 2996735, 3543235,
+      4127370, 4746410, 5397625, 6078285, 6785660, 7517020, 8269635, 9040775, 9827710, 10627710,
+      11429400, 12233306, 13039953, 13849865, 14663567, 15481584, 16304441, 17132662, 17966772, 18807296,
+      19654759, 20509686, 21372601, 22244029, 23124495, 24014524, 24914640, 25825368, 26747233, 27680760,
+      28626474, 29584899, 30556560, 31541982, 32541690, 33556208, 34586062, 35631776, 36693875, 37772883,
+      38869326, 39983728, 41116614, 42268509, 43439937, 44631423, 45843492, 47076669, 48331479, 49608446,
+      50908096, 52230953, 53577541, 54948386, 56344012, 57764944, 59211707, 60684826, 62184826
+    ];
+
+    function calculateLevel() {
+      const type = document.getElementById("type").value;
+      const inputExpStr = document.getElementById("exp").value.trim();
+      const resultDiv = document.getElementById("result");
+
+      if (!inputExpStr) {
+        resultDiv.textContent = "累計経験値を入力してください。";
+        return;
+      }
+
+      const inputExp = Number(inputExpStr);
+      if (isNaN(inputExp) || inputExp < 0) {
+        resultDiv.textContent = "有効な経験値を入力してください。";
+        return;
+      }
+
+      const multiplier = multipliers[type] || 1.0;
+      const adjustedExp = inputExp / multiplier;
+      const requiredExp = minRequiredExp[type];
+
+      if (inputExp < requiredExp) {
+        resultDiv.innerHTML = `<span style="color: red; font-size: 0.9em; font-weight: normal;">
+          修行に出すには、まだ経験値が足りないようです。<br>
+          （必要な累計経験値：${requiredExp.toLocaleString()}）
+        </span>`;
+        return;
+      }
+
+      let level = 1;
+      for (let i = 1; i < baseExpTable.length; i++) {
+        if (adjustedExp < baseExpTable[i]) {
+          level = i;
+          break;
+        }
+      }
+
+      if (adjustedExp >= baseExpTable[baseExpTable.length - 1]) {
+        level = baseExpTable.length;
+        resultDiv.innerHTML = `推定極レベル: ${level}<br><span style="color: red;">レベリングお疲れ様でした！</span>`;
+      } else {
+        resultDiv.textContent = `推定極レベル: ${level}`;
+      }
     }
-    window.addEventListener("DOMContentLoaded",()=> {
-      setResult("",true);
+
+    // 初期状態でプレースホルダ表示
+    window.addEventListener("DOMContentLoaded", () => {
+      const result = document.getElementById("result");
+      result.className = "empty";
+      result.textContent = "";
     });
-    function calculateLevel(){
-      /* 略：既存JS仕様に合わせてください */
-      // 最後に setResult("推定レベル：XX"); など呼ぶ
-    }
   </script>
 </body>
 </html>
