@@ -73,12 +73,14 @@ function calculateLevel() {
 
   if (adjustedExp >= baseExpTable[baseExpTable.length - 1]) {
     level = baseExpTable.length;
-    resultDiv.innerHTML = `
-      <div style="font-size: 18px; font-weight: 600; display: block;">推定極レベル: ${level}</div>
-      <div style="color: red; font-size: 14px; margin-top: 12px; line-height: 1.6; display: block;">
-        レベリングお疲れ様でした！
-      </div>
-    `;
+ resultDiv.innerHTML = `
+  <div style="display: flex; flex-direction: column; align-items: flex-start;">
+    <div style="font-size: 18px; font-weight: 600;">推定極レベル: ${level}</div>
+    <div style="color: red; font-size: 14px; margin-top: 12px; line-height: 1.6;">
+      レベリングお疲れ様でした！
+    </div>
+  </div>
+`;
   } else {
     resultDiv.innerHTML = `<div style="font-size: 18px; font-weight: 600;">推定極レベル: ${level}</div>`;
   }
