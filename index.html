@@ -11,18 +11,20 @@
     background: #f9f9f9;
     color: #2c3e50;
   }
-  label, select, input, button {
-    font-size: 16px;
+  label {
+    font-size: 15px;
   }
   select, input[type="text"] {
+    font-size: 15px;
     padding: 6px 8px;
     margin: 6px 0 12px 0;
-    width: 300px;
-    max-width: 100%;
+    width: 320px; /* これを下記で調整 */
+    max-width: 100%; /* ここ追加でスマホ画面幅に合わせる */
     box-sizing: border-box;
   }
   button {
-    padding: 8px 16px;
+    font-size: 15px;
+    padding: 6px 12px;
     background-color: #2c3e50;
     color: white;
     border: none;
@@ -33,18 +35,24 @@
   }
   #result {
     margin-top: 20px;
-    max-width: 300px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    max-width: 320px;
     width: 100%;
     box-sizing: border-box;
   }
-  @media (max-width: 400px) {
-    label, select, input, button {
-      font-size: 14px;
-    }
-    select, input[type="text"], #result {
-      width: 100%;
-      max-width: 100%;
-    }
+  /* レベリングお疲れ様メッセージの中央揃え */
+  #result .level-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #result .level-container .message {
+    color: red;
+    font-size: 14px;
+    margin-top: 12px;
+    line-height: 1.6;
   }
 </style>
 </head>
@@ -147,17 +155,16 @@ function calculateLevel() {
   if (adjustedExp >= baseExpTable[baseExpTable.length - 1]) {
     level = baseExpTable.length;
     resultDiv.innerHTML = `
-      <div style="display: flex; flex-direction: column; align-items: center;">
-        <div style="font-size: 18px; font-weight: 600;">推定極レベル: ${level}</div>
-        <div style="color: red; font-size: 14px; margin-top: 12px; line-height: 1.6;">
-          レベリングお疲れ様でした！
-        </div>
+      <div class="level-container">
+        <div>推定極レベル: ${level}</div>
+        <div class="message">レベリングお疲れ様でした！</div>
       </div>
     `;
   } else {
-    resultDiv.innerHTML = `<div style="font-size: 18px; font-weight: 600;">推定極レベル: ${level}</div>`;
+    resultDiv.innerHTML = `<div>推定極レベル: ${level}</div>`;
   }
 }
 </script>
 </body>
 </html>
+
